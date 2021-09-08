@@ -5,33 +5,15 @@ import ContactList from './components/ContactList/ContactList';
 import Container from './App.styled';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
-
-  /*Updating contacts from local Storage on startup*/
-  useEffect(() => {
-    let data;
-
-    try {
-      data = JSON.parse(localStorage.getItem('phonebook'));
-    } catch (error) {
-      console.log(error);
-    }
-
-    if (data.contacts) setContacts(data.contacts);
-  }, []);
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(localStorage.getItem('phonebook')).contacts ?? [];
+  });
 
   /*Changing local Storage data on every changes with contacts*/
   useEffect(() => {
     localStorage.setItem('phonebook', JSON.stringify({ contacts: contacts }));
   }, [contacts]);
-
-  /*function for filtering contacts*/
-  const contactsFiltering = key => {
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(key.toLowerCase()),
-    );
-  };
 
   /*function for adding an item to contacts*/
   const contactAdding = newContact => {
@@ -61,13 +43,14 @@ const App = () => {
     setFilter(e.target.value.trim());
   };
 
-  const filteredContacts = contactsFiltering(filter);
+  const filteredContacts = contacts.filter(({ name }) =>
+    name.toLowerCase().includes(filter.toLowerCase()),
+  );
 
   return (
     <Container>
       <h1>Phonebook</h1>
       <ContactForm
-        // handleChange={this.handleChange}
         availabilityСheck={availabilityСheck}
         contactAdding={contactAdding}
       />
