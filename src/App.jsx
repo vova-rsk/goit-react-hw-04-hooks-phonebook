@@ -1,19 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
 import ContactList from './components/ContactList/ContactList';
 import Container from './App.styled';
+import useLocalStorage from './hooks/useLocalStorage';
 
 const App = () => {
   const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(localStorage.getItem('phonebook')).contacts ?? [];
-  });
-
-  /*Changing local Storage data on every changes with contacts*/
-  useEffect(() => {
-    localStorage.setItem('phonebook', JSON.stringify({ contacts: contacts }));
-  }, [contacts]);
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
 
   /*function for adding an item to contacts*/
   const contactAdding = newContact => {
