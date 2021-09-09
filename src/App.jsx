@@ -11,12 +11,12 @@ const App = () => {
 
   /*function for adding an item to contacts*/
   const contactAdding = newContact => {
-    setContacts([...contacts, newContact]);
+    setContacts(prevState => [...prevState, newContact]);
   };
 
   /*function for removing an item from contacts*/
   const contactRemoving = id => {
-    setContacts(contacts.filter(elem => elem.id !== id));
+    setContacts(prevState => prevState.filter(elem => elem.id !== id));
   };
 
   /*function for checking the presence of a contact with the specified name*/
